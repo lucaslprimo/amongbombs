@@ -13,6 +13,7 @@ namespace Primozov.AmongBombs
         private float endStunningTime = 0;
         private bool isStuned = false;
 
+        [Header("Events")]
         [SerializeField] UnityEvent onEnterStunning;
         [SerializeField] UnityEvent onExitStunning;
 

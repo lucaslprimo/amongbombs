@@ -51,7 +51,7 @@ namespace Primozov.AmongBombs
             if (!exploded)
             {
                 StopMoving();
-                impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombRange * 0.1f;
+                impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombRange;
                 impulseSource.GenerateImpulse();
                 exploded = true;
                 Explosion explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity).GetComponent<Explosion>();

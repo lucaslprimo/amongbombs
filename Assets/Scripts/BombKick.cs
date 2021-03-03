@@ -13,7 +13,8 @@ namespace Primozov.AmongBombs
         [SerializeField] LayerMask filterRaycastLayer;
         [SerializeField] int kickForce = 200;
 
-        public UnityEvent onKickBomb;
+        [Header("Events")]
+        [SerializeField] UnityEvent onKickBomb;
 
         private bool shouldKick = false;
 

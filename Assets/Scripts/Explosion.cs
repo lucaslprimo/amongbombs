@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace Primozov.AmongBombs
 {
@@ -10,6 +10,8 @@ namespace Primozov.AmongBombs
     {
         [SerializeField] GameObject explosionPrefab;
         [SerializeField] LayerMask filterRaycastLayers;
+
+        [SerializeField] UnityEvent onSourceExplosion;
 
         public enum ExplosionDirection
         {
@@ -44,6 +46,7 @@ namespace Primozov.AmongBombs
             CheckHitSomething();
             if (isSource)
             {
+                onSourceExplosion.Invoke();
                 bombRange--;
                 SpreadExplosion(groundTile.GetBottomNeighbor(), ExplosionDirection.Down, bombRange);
                 SpreadExplosion(groundTile.GetTopNeighbor(), ExplosionDirection.Up, bombRange);
@@ -85,6 +88,8 @@ namespace Primozov.AmongBombs
             {
                 case GroundTile.NeighborType.Destructable:
                     //Destroy the Destructable
+                    Loottable loottable = neighborInfo.gameObject.GetComponent<Loottable>();
+                    loottable.Loot();
                     Destroy(neighborInfo.gameObject);
                     break;
                 case GroundTile.NeighborType.Indestructable:

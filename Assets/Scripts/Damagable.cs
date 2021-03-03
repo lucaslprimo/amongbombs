@@ -10,6 +10,7 @@ namespace Primozov.AmongBombs
         [SerializeField] bool oneHit;
         [SerializeField] int health = 100;
 
+        [Header("Events")]
         [SerializeField] UnityEvent onDead;
         [SerializeField] UnityEvent<int> onTakeDamage;
 

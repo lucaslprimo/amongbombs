@@ -13,18 +13,16 @@ namespace Primozov.AmongBombs
         [SerializeField] GameObject bombPrefab;
         [SerializeField] float secondsToExplode = 3;
         [SerializeField] LayerMask raycastFilterLayer;
-       
+        [SerializeField] int bombLimit = 10;
+        [SerializeField] int rangeLimit = 10;
+
         private List<float> bombDropCooldownTimes = new List<float>();
         private int bombRange = 0;
         private int bombIndex = 0;
 
         private void Start()
         {
-            IncreaseMaxBombs();
-            IncreaseMaxBombs();
-            IncreaseMaxBombs();
-            IncreaseRange();
-            IncreaseRange();
+            IncreaseBombs();
             IncreaseRange();
         }
 
@@ -33,9 +31,29 @@ namespace Primozov.AmongBombs
             bombRange++;
         }
 
-        public void IncreaseMaxBombs()
+        public void IncreaseBombs()
         {
-            bombDropCooldownTimes.Add(0);
+            if(bombDropCooldownTimes.Count < bombLimit)
+                bombDropCooldownTimes.Add(0);
+        }
+
+        public void IncreaseToMaxRange()
+        {
+            if (bombRange < rangeLimit)
+            {
+                bombRange = rangeLimit - bombRange;
+            }
+        }
+
+        public void IncreaseToMaxBombs()
+        {
+            if (bombDropCooldownTimes.Count < bombLimit)
+            {
+                for (int i = 0; i < bombLimit - bombDropCooldownTimes.Count; i++)
+                {
+                    bombDropCooldownTimes.Add(0);
+                }
+            }
         }
 
         void Update()

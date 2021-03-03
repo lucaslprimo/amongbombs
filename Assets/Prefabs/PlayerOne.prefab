@@ -155,7 +155,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  speedLimit: 5
   rotationRef: {fileID: 7970011067260583581}
+  invertAxis: 0
   keyUp: 119
   keyLeft: 97
   keyDown: 115
@@ -175,6 +177,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7970011067211497130}
+        m_TargetAssemblyTypeName: Primozov.AmongBombs.PlayerAnimHelper, Assembly-CSharp
+        m_MethodName: UpdateMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerSpeedIncrease:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7970011066846662942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +210,8 @@ MonoBehaviour:
   raycastFilterLayer:
     serializedVersion: 2
     m_Bits: 192
+  bombLimit: 10
+  rangeLimit: 10
 --- !u!114 &7970011066846662941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +318,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7970011066846662936}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a887a6851fefd84c9ee7a7098de4d4f, type: 3}
   m_Name: 
