@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
+using System;
 
-namespace Primozov.AmongBombs
+namespace Primozov.AmongBombs.Systems
 {
-    public class Damagable : MonoBehaviour
+    public class DamageSystem
     {
-        [SerializeField] bool oneHit;
-        [SerializeField] int health = 100;
+        bool oneHit;
+        int health = 100;
 
-        [Header("Events")]
-        [SerializeField] UnityEvent onDead;
-        [SerializeField] UnityEvent<int> onTakeDamage;
+        public event Action onDead;
+        public event Action<int> onTakeDamage;
+
+        public DamageSystem(bool oneHit, int health)
+        {
+            this.oneHit = oneHit;
+            this.health = health;
+        }
 
         public void TakeDamage(int damage)
         {

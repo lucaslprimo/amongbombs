@@ -1,4 +1,5 @@
 using Cinemachine;
+using Primozov.AmongBombs.Systems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,14 +14,11 @@ namespace Primozov.AmongBombs
         [SerializeField] LayerMask raycastFilterLayer;
 
         private CinemachineImpulseSource impulseSource;
-
-        private float explosionTime = 0;
-        private int bombRange;
         private Collider2D mCollider;
         private Rigidbody2D rb;
         GroundTile groundTile;
 
-        private bool exploded = false;
+        BombSystem bombSystem;
 
         private void Awake()
         {
@@ -28,8 +26,8 @@ namespace Primozov.AmongBombs
         }
         public void SetupBomb(int bombRange, float secondsToExplode)
         {
-            explosionTime = Time.time + secondsToExplode;
-            this.bombRange = bombRange;
+            bombSystem = new BombSystem(bombRange, secondsToExplode);
+            bombSystem.onExplode += Explode;
         }
 
         private void Start()
@@ -40,24 +38,17 @@ namespace Primozov.AmongBombs
 
         void Update()
         {
-            if (Time.time > explosionTime)
-            {
-                Explode();
-            }
+            bombSystem.Update(Time.time);
         }
 
         public void Explode()
         {
-            if (!exploded)
-            {
-                StopMoving();
-                impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombRange;
-                impulseSource.GenerateImpulse();
-                exploded = true;
-                Explosion explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity).GetComponent<Explosion>();
-                explosion.Setup(true, Explosion.ExplosionDirection.ALL, bombRange, groundTile);
-                Destroy(gameObject);
-            }
+            StopMoving();
+            impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombSystem.GetBombRange();
+            impulseSource.GenerateImpulse();
+            Explosion explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity).GetComponent<Explosion>();
+            explosion.Setup(true, Explosion.ExplosionDirection.ALL, bombSystem.GetBombRange(), groundTile);
+            Destroy(gameObject);   
         }
 
         private void OnTriggerExit2D(Collider2D collision)
