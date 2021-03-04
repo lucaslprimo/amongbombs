@@ -151,7 +151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7970011066846662936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d967c1c32073224ea154ffc85e1e97a, type: 3}
+  m_Script: {fileID: 11500000, guid: 442bbd02b36d14054be83ef9f720092e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
@@ -166,18 +166,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7970011067211497130}
-        m_TargetAssemblyTypeName: PlayerAnimHelper, Assembly-CSharp
-        m_MethodName: UpdateMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7970011067211497130}
         m_TargetAssemblyTypeName: Primozov.AmongBombs.PlayerAnimHelper, Assembly-CSharp
         m_MethodName: UpdateMove
         m_Mode: 0
@@ -191,7 +179,19 @@ MonoBehaviour:
         m_CallState: 2
   onPlayerSpeedIncrease:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7970011067211497130}
+        m_TargetAssemblyTypeName: Primozov.AmongBombs.PlayerAnimHelper, Assembly-CSharp
+        m_MethodName: UpdateSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7970011066846662942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +211,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   bombLimit: 10
-  rangeLimit: 10
+  rangeLimit: 13
 --- !u!114 &7970011066846662941
 MonoBehaviour:
   m_ObjectHideFlags: 0

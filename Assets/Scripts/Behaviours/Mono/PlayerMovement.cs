@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Tilemaps;
+using Primozov.AmongBombs.Systems;
 
 namespace Primozov.AmongBombs
 {
@@ -23,21 +23,24 @@ namespace Primozov.AmongBombs
         [SerializeField] UnityEvent<Vector2> onPlayerMove;
         [SerializeField] UnityEvent onPlayerSpeedIncrease;
 
+        PlayerMovementSystem playerMovementSystem;
+
         Vector2 movement;
+
+        private void Awake()
+        {
+            playerMovementSystem = new PlayerMovementSystem(speed, speedLimit);
+        }
 
         void Update()
         {
             GetInputs();
+            playerMovementSystem.UpdateMovement(movement);
         }
 
         public void IncreaseSpeed()
         {
-            if (speed < speedLimit)
-            {
-                speed++;
-                onPlayerSpeedIncrease.Invoke();
-            }
-                
+            playerMovementSystem.IncreaseSpeed();
         }
 
         private void GetInputs()
@@ -62,8 +65,7 @@ namespace Primozov.AmongBombs
 
             onPlayerMove.Invoke(movement);
             RotateRefByMovement(movement);
-            Vector3 mov3 = new Vector3(movement.x, movement.y, 0);
-            transform.position += mov3 * Time.deltaTime * speed;
+            transform.position += playerMovementSystem.GetNewPosition();
         }
 
         private void RotateRefByMovement(Vector2 movement)
