@@ -1,17 +1,20 @@
 using Mirror;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
-namespace Primozov.AmongBombs
+namespace Primozov.AmongBombs.Behaviours.Network
 {
+    public struct SetupPlayerMessage : NetworkMessage
+    {
+        public string nickname;
+    }
+
     [AddComponentMenu("")]
     public class NetworkManagerCustom : NetworkManager
     {
         public static NetworkManagerCustom Instance;
+
+        private string tempNickName;
 
         public event Action OnError;
 
@@ -20,6 +23,11 @@ namespace Primozov.AmongBombs
         public override void OnValidate()
         {
             base.OnValidate();
+        }
+
+        internal void SetNickname(string text)
+        {
+            tempNickName = text;
         }
 
         /// <summary>
@@ -159,6 +167,7 @@ namespace Primozov.AmongBombs
             //    : Instantiate(playerPrefab);
 
             GameObject player = Instantiate(playerPrefab);
+            player.GetComponent<LobbyPlayer>().nickname = tempNickName;
 
             NetworkServer.AddPlayerForConnection(conn, player);
         }
@@ -192,6 +201,11 @@ namespace Primozov.AmongBombs
         public override void OnClientConnect(NetworkConnection conn)
         {
             base.OnClientConnect(conn);
+
+            SetupPlayerMessage setupPlayerMessage = new SetupPlayerMessage();
+            setupPlayerMessage.nickname = tempNickName;
+
+            conn.Send(setupPlayerMessage);
         }
 
         /// <summary>
@@ -238,7 +252,17 @@ namespace Primozov.AmongBombs
         /// This is invoked when a server is started - including when a host is started.
         /// <para>StartServer has multiple signatures, but they all cause this hook to be called.</para>
         /// </summary>
-        public override void OnStartServer() { }
+        public override void OnStartServer() {
+            NetworkServer.RegisterHandler<SetupPlayerMessage>(OnSetNickname);
+        }
+
+        private void OnSetNickname(NetworkConnection conn, SetupPlayerMessage message)
+        {
+            GameObject player = Instantiate(playerPrefab);
+            player.GetComponent<LobbyPlayer>().nickname = message.nickname;
+
+            NetworkServer.AddPlayerForConnection(conn, player);
+        }
 
         /// <summary>
         /// This is invoked when the client is started.
