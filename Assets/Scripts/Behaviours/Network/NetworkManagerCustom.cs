@@ -1,14 +1,19 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Primozov.AmongBombs
 {
     [AddComponentMenu("")]
     public class NetworkManagerCustom : NetworkManager
     {
-        [SerializeField] SpawnPoints spanPoints;
+        public static NetworkManagerCustom Instance;
+
+        public event Action OnError;
 
         #region Unity Callbacks
 
@@ -33,6 +38,7 @@ namespace Primozov.AmongBombs
         public override void Start()
         {
             base.Start();
+            Instance = this;
         }
 
         /// <summary>
@@ -147,10 +153,12 @@ namespace Primozov.AmongBombs
         public override void OnServerAddPlayer(NetworkConnection conn)
         {
             // base.OnServerAddPlayer(conn);
-            Transform startPos = spanPoints.GetNextSpawnPoint();
-            GameObject player = startPos != null
-                ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
-                : Instantiate(playerPrefab);
+            //Transform startPos = spawnPoints.GetNextSpawnPoint();
+            //GameObject player = startPos != null
+            //    ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
+            //    : Instantiate(playerPrefab);
+
+            GameObject player = Instantiate(playerPrefab);
 
             NetworkServer.AddPlayerForConnection(conn, player);
         }
@@ -194,6 +202,7 @@ namespace Primozov.AmongBombs
         public override void OnClientDisconnect(NetworkConnection conn)
         {
             base.OnClientDisconnect(conn);
+            OnError.Invoke();
         }
 
         /// <summary>
@@ -201,7 +210,8 @@ namespace Primozov.AmongBombs
         /// </summary>
         /// <param name="conn">Connection to a server.</param>
         /// <param name="errorCode">Error code.</param>
-        public override void OnClientError(NetworkConnection conn, int errorCode) { }
+        [System.Obsolete]
+        public override void OnClientError(NetworkConnection conn, int errorCode) {}
 
         /// <summary>
         /// Called on clients when a servers tells the client it is no longer ready.
