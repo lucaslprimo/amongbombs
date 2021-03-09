@@ -63,13 +63,17 @@ namespace Primozov.AmongBombs
 
         private void StopMoving()
         {
-            rb.velocity = Vector2.zero;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, raycastFilterLayer);
-            if (hit.collider != null && hit.collider.CompareTag("Ground"))
+            if (rb)
             {
-                groundTile = hit.collider.gameObject.GetComponent<GroundTile>();
-                transform.position = groundTile.transform.position;
+                rb.velocity = Vector2.zero;
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, raycastFilterLayer);
+                if (hit.collider != null && hit.collider.CompareTag("Ground"))
+                {
+                    groundTile = hit.collider.gameObject.GetComponent<GroundTile>();
+                    transform.position = groundTile.transform.position;
+                }
             }
+          
         }
     }
 }

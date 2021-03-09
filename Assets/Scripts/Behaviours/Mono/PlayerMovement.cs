@@ -35,12 +35,19 @@ namespace Primozov.AmongBombs
         void Update()
         {
             GetInputs();
+
+            if (invertAxis)
+            {
+                movement *= -1;
+            }
+
             playerMovementSystem.UpdateMovement(movement);
         }
 
         public void IncreaseSpeed()
         {
             playerMovementSystem.IncreaseSpeed();
+            onPlayerSpeedIncrease.Invoke();
         }
 
         private void GetInputs()
@@ -58,13 +65,8 @@ namespace Primozov.AmongBombs
 
         private void FixedUpdate()
         {
-            if (invertAxis)
-            {
-                movement *= -1;
-            }
-
-            onPlayerMove.Invoke(movement);
             RotateRefByMovement(movement);
+            onPlayerMove.Invoke(movement);
             transform.position += playerMovementSystem.GetNewPosition();
         }
 

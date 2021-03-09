@@ -33,7 +33,8 @@ namespace Primozov.AmongBombs.Behaviours.Network
         private void Start()
         {
             Instance = this;
-            if (!LobbyPlayer.localPlayer.isServer)
+
+            if (LobbyPlayer.localPlayer && !LobbyPlayer.localPlayer.isServer)
             {
                 startGameButton.SetActive(false);
             }

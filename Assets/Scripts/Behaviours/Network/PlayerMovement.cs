@@ -37,13 +37,21 @@ namespace Primozov.AmongBombs.Behaviours.Network
         {
             if (isLocalPlayer) {
                 GetInputs();
+                if (invertAxis)
+                {
+                    movement *= -1;
+                }
+                playerMovementSystem.UpdateMovement(movement);
             }
-            playerMovementSystem.UpdateMovement(movement);
         }
 
         public void IncreaseSpeed()
         {
-            playerMovementSystem.IncreaseSpeed();
+            if (isLocalPlayer)
+            {
+                playerMovementSystem.IncreaseSpeed();
+                CmdUpdateAnimationSpeed();
+            }
         }
 
         private void GetInputs()
@@ -61,14 +69,24 @@ namespace Primozov.AmongBombs.Behaviours.Network
 
         private void FixedUpdate()
         {
-            if (invertAxis)
+            if (isLocalPlayer)
             {
-                movement *= -1;
+                CmdUpdateAnimationMove(movement);
+                RotateRefByMovement(movement);
+                transform.position += playerMovementSystem.GetNewPosition();
             }
+        }
 
+        [Command]
+        public void CmdUpdateAnimationMove(Vector2 movement)
+        {
             onPlayerMove.Invoke(movement);
-            RotateRefByMovement(movement);
-            transform.position += playerMovementSystem.GetNewPosition();
+        }
+
+        [Command]
+        public void CmdUpdateAnimationSpeed()
+        {
+            onPlayerSpeedIncrease.Invoke();
         }
 
         private void RotateRefByMovement(Vector2 movement)
@@ -98,9 +116,12 @@ namespace Primozov.AmongBombs.Behaviours.Network
 
         IEnumerator InvertedAxisPeriod(float seconds)
         {
-            invertAxis = true;
-            yield return new WaitForSeconds(seconds);
-            invertAxis = false;
+            if (isLocalPlayer)
+            {
+                invertAxis = true;
+                yield return new WaitForSeconds(seconds);
+                invertAxis = false;
+            }
         }
     
     }

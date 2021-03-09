@@ -1,10 +1,11 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Primozov.AmongBombs.Behaviours.Mono
+namespace Primozov.AmongBombs.Behaviours.Network
 {
-    public class PlayerAnimHelper : MonoBehaviour
+    public class PlayerAnimHelper : NetworkBehaviour
     {
         [SerializeField] Animator animator;
 
@@ -14,7 +15,7 @@ namespace Primozov.AmongBombs.Behaviours.Mono
 
         private const string PARAM_SPEED = "speed";
 
-
+        [ClientRpc]
         public void UpdateMove(Vector2 movementVector)
         {
             animator.SetInteger(PARAM_X_MOVE, (int)movementVector.x);
@@ -24,6 +25,7 @@ namespace Primozov.AmongBombs.Behaviours.Mono
         }
 
 
+        [ClientRpc]
         public void UpdateSpeed()
         {
             animator.SetFloat(PARAM_SPEED, animator.GetFloat(PARAM_SPEED) + 0.2f);
