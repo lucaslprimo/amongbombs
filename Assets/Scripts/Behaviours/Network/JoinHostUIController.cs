@@ -13,23 +13,24 @@ namespace Primozov.AmongBombs.Behaviours.Network
 
         public void ClientConnectToIP()
         {
-            NetworkManagerCustom.Instance.OnError += ShowMessage;
+            NetworkRoomManagerCustom.Instance.OnError += ShowMessage;
             errorMessage.SetActive(false);
-            NetworkManagerCustom.Instance.SetNickname(nickNameInput.text);
-            NetworkManagerCustom.Instance.networkAddress = ipAdressInput.text;
-            NetworkManagerCustom.Instance.StartClient();
+            NetworkRoomManagerCustom.Instance.SetNickname(nickNameInput.text);
+            NetworkRoomManagerCustom.Instance.networkAddress = ipAdressInput.text;
+            NetworkRoomManagerCustom.Instance.StartClient();
         }
 
         private void ShowMessage()
         {
-            errorMessage.SetActive(true);
-            NetworkManagerCustom.Instance.OnError -= ShowMessage;
+            if(errorMessage != null)
+                errorMessage.SetActive(true);
+            NetworkRoomManagerCustom.Instance.OnError -= ShowMessage;
         }
 
         public void HostGame()
         {
-            NetworkManagerCustom.Instance.SetNickname("The Host");
-            NetworkManagerCustom.Instance.StartHost();
+            NetworkRoomManagerCustom.Instance.SetNickname("The Host");
+            NetworkRoomManagerCustom.Instance.StartHost();
         }
     }
 

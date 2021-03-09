@@ -1,5 +1,6 @@
 using Mirror;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Primozov.AmongBombs.Behaviours.Network
@@ -10,9 +11,9 @@ namespace Primozov.AmongBombs.Behaviours.Network
     }
 
     [AddComponentMenu("")]
-    public class NetworkManagerCustom : NetworkManager
+    public class NetworkManagerCustomBkp : NetworkRoomManager
     {
-        public static NetworkManagerCustom Instance;
+        public static NetworkManagerCustomBkp Instance;
 
         private string tempNickName;
 
@@ -166,10 +167,9 @@ namespace Primozov.AmongBombs.Behaviours.Network
             //    ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
             //    : Instantiate(playerPrefab);
 
-            GameObject player = Instantiate(playerPrefab);
-            player.GetComponent<LobbyPlayer>().nickname = tempNickName;
+            //GameObject player = Instantiate(playerPrefab);
 
-            NetworkServer.AddPlayerForConnection(conn, player);
+            //NetworkServer.AddPlayerForConnection(conn, player);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// </summary>
         /// <param name="conn">Connection from client.</param>
         /// <param name="errorCode">Error code.</param>
-      
+
 
         #endregion
 
@@ -259,7 +259,8 @@ namespace Primozov.AmongBombs.Behaviours.Network
         private void OnSetNickname(NetworkConnection conn, SetupPlayerMessage message)
         {
             GameObject player = Instantiate(playerPrefab);
-            player.GetComponent<LobbyPlayer>().nickname = message.nickname;
+            LobbyPlayer lobbyPlayer = player.GetComponent<LobbyPlayer>();
+            //lobbyPlayer.nickname = message.nickname;
 
             NetworkServer.AddPlayerForConnection(conn, player);
         }
