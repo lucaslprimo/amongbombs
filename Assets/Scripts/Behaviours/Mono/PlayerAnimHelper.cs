@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace Primozov.AmongBombs
+namespace Primozov.AmongBombs.Behaviours.Mono
 {
     public class PlayerAnimHelper : MonoBehaviour
     {

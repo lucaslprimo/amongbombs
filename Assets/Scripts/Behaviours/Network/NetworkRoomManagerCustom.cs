@@ -78,10 +78,7 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// <summary>
         /// This is called on the server when the server is started - including when a host is started.
         /// </summary>
-        public override void OnRoomStartServer()
-        {
-        }
-       
+        public override void OnRoomStartServer(){}
 
         /// <summary>
         /// This is called on the server when the server is stopped - including when a host is stopped.
@@ -114,7 +111,10 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// This is called on the server when a networked scene finishes loading.
         /// </summary>
         /// <param name="sceneName">Name of the new scene.</param>
-        public override void OnRoomServerSceneChanged(string sceneName) { }
+        public override void OnRoomServerSceneChanged(string sceneName) 
+        {           
+          
+        }
 
         /// <summary>
         /// This allows customization of the creation of the GamePlayer object on the server.
@@ -183,7 +183,8 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// This is a hook to allow custom behaviour when the game client exits the room.
         /// </summary>
         public override void OnRoomClientExit() {
-            LobbyUIController.Instance.RefreshUIList(roomSlots);
+            if(LobbyUIController.Instance)
+                LobbyUIController.Instance.RefreshUIList(roomSlots);
         }
 
         /// <summary>
@@ -213,7 +214,7 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// This is called on the client when the client is finished loading a new networked scene.
         /// </summary>
         /// <param name="conn">The connection that finished loading a new networked scene.</param>
-        public override void OnRoomClientSceneChanged(NetworkConnection conn) { }
+        public override void OnRoomClientSceneChanged(NetworkConnection conn) {}
 
         /// <summary>
         /// Called on the client when adding a player to the room fails.

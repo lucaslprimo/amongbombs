@@ -76,10 +76,19 @@ namespace Primozov.AmongBombs.Behaviours.Network
 
         private void ClearUIList()
         {
-           foreach(Transform obj in roomList.transform)
-           {
-                Destroy(obj.gameObject);
-           }
+            if (roomList != null)
+            {
+                foreach (Transform obj in roomList.transform)
+                {
+                    Destroy(obj.gameObject);
+                }
+            }
+           
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
         }
     }
 }

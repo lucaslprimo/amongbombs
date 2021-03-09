@@ -83,14 +83,16 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// <para>Note: isLocalPlayer is not guaranteed to be set until OnStartLocalPlayer is called.</para>
         /// </summary>
         public override void OnClientEnterRoom() {
-            LobbyUIController.Instance.RefreshUIList(NetworkRoomManagerCustom.Instance.roomSlots);
+            if (LobbyUIController.Instance)
+                LobbyUIController.Instance.RefreshUIList(NetworkRoomManagerCustom.Instance.roomSlots);
         }
 
         /// <summary>
         /// This is a hook that is invoked on all player objects when exiting the room.
         /// </summary>
         public override void OnClientExitRoom() {
-            LobbyUIController.Instance.RefreshUIList(NetworkRoomManagerCustom.Instance.roomSlots);
+            if (LobbyUIController.Instance)
+                LobbyUIController.Instance.RefreshUIList(NetworkRoomManagerCustom.Instance.roomSlots);
         }
 
         #endregion
@@ -111,7 +113,26 @@ namespace Primozov.AmongBombs.Behaviours.Network
         /// <param name="oldReadyState">The old readyState value</param>
         /// <param name="newReadyState">The new readyState value</param>
         public override void ReadyStateChanged(bool oldReadyState, bool newReadyState) {
-            LobbyUIController.Instance.RefreshUIList(NetworkRoomManagerCustom.Instance.roomSlots);
+            if (LobbyUIController.Instance)
+                LobbyUIController.Instance.RefreshUIList(NetworkRoomManagerCustom.Instance.roomSlots);
+        }
+
+        [ClientRpc]
+        public void ClearRoomPlayer()
+        {
+            if (isLocalPlayer)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        [ClientRpc]
+        public void SetReadyToPlay()
+        {
+            if (isLocalPlayer)
+            {
+                ClientScene.Ready(NetworkClient.connection);
+            }
         }
 
         #endregion

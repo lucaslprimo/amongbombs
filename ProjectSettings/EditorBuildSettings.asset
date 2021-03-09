@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Room.unity
     guid: f00e2201c7685be4f9317aad8a1fac8b
   - enabled: 1
-    path: Assets/Scenes/LevelTest.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Multiplayer_Gameplay.unity
+    guid: 1e52b11b9a03be84797da69a80423e99
+  - enabled: 1
+    path: Assets/Scenes/SinglePlayer_Gameplay.unity
+    guid: 0a48a9d38bafcde4693694dd88da1ed4
   m_configObjects: {}
