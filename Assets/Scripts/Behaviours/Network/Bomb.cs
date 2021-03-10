@@ -1,4 +1,5 @@
 using Cinemachine;
+using Mirror;
 using Primozov.AmongBombs.Systems;
 using System;
 using System.Collections;
@@ -6,9 +7,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Primozov.AmongBombs.Behaviours.Mono
+namespace Primozov.AmongBombs.Behaviours.Network
 {
-    public class Bomb : MonoBehaviour
+    public class Bomb : NetworkBehaviour
     {
         [SerializeField] GameObject explosionPrefab;
         [SerializeField] LayerMask raycastFilterLayer;
@@ -24,43 +25,59 @@ namespace Primozov.AmongBombs.Behaviours.Mono
         {
             rb = GetComponent<Rigidbody2D>();
         }
+
+        [Server]
         public void SetupBomb(int bombRange, float secondsToExplode)
         {
             bombSystem = new BombSystem(bombRange, secondsToExplode);
             bombSystem.onExplode += Explode;
         }
 
+        [Server]
         private void Start()
         {
             mCollider = GetComponent<Collider2D>();
             impulseSource = GetComponent<CinemachineImpulseSource>();
         }
 
+        [Server]
         void Update()
         {
             bombSystem.Update(Time.time);
         }
 
+        [Server]
         public void Explode()
         {
             StopMoving();
-            impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombSystem.GetBombRange();
-            impulseSource.GenerateImpulse();
+            ShakeCameraClients();
+            GameObject explosionObject = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Explosion explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity).GetComponent<Explosion>();
+            NetworkServer.Spawn(explosionObject);
             explosion.Setup(true, Explosion.ExplosionDirection.ALL, bombSystem.GetBombRange(), groundTile);
             Destroy(gameObject);   
         }
 
+        [ClientRpc]
+        public void ShakeCameraClients()
+        {
+            impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombSystem.GetBombRange();
+            impulseSource.GenerateImpulse();
+        }
+
+        [Server]
         private void OnTriggerExit2D(Collider2D collision)
         {
             mCollider.isTrigger = false;
         }
 
+        [Server]
         private void OnCollisionEnter2D(Collision2D collision)
         {
             StopMoving();
         }
 
+        [Server]
         private void StopMoving()
         {
             if (rb)

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Primozov.AmongBombs.Behaviours.Mono
+namespace Primozov.AmongBombs
 {
     public class Explosion : MonoBehaviour
     {
