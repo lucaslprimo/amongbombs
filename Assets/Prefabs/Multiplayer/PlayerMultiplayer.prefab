@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 8180303825180200581}
   - component: {fileID: 1172283105207262824}
   - component: {fileID: -8752913449233296703}
+  - component: {fileID: -6251020668159603610}
   - component: {fileID: 3710736758879088399}
   - component: {fileID: 8180303825180200580}
   - component: {fileID: 8245971818127499943}
@@ -137,6 +138,28 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   animator: {fileID: 7970011068065810962}
+--- !u!114 &-6251020668159603610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180303825180200583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e998617a6734103916c2da5b0383f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  key: 32
+  bombPrefab: {fileID: 479328526847665745, guid: e0558a11280e3de40b135ff30713ff4c, type: 3}
+  secondsToExplode: 3
+  raycastFilterLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  bombLimit: 10
+  rangeLimit: 13
 --- !u!114 &3710736758879088399
 MonoBehaviour:
   m_ObjectHideFlags: 0

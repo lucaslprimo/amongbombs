@@ -1,8 +1,9 @@
 using UnityEngine;
+using Mirror;
 
-namespace Primozov.AmongBombs.Behaviours.Mono
+namespace Primozov.AmongBombs.Behaviours.Network
 {
-    public class Loottable : MonoBehaviour
+    public class Loottable : NetworkBehaviour
     {
         [Range(0.0f, 100.0f)]
         [SerializeField] float lootChance;
@@ -10,6 +11,7 @@ namespace Primozov.AmongBombs.Behaviours.Mono
         [SerializeField] GameObject itemPrefab;
         [SerializeField] PowerUpItem.PowerUpType[] lootItems;
 
+        [Server]
         public void Loot()
         {
             float randomNumber = Random.Range(0, 100);
@@ -20,10 +22,13 @@ namespace Primozov.AmongBombs.Behaviours.Mono
             }
         }
 
+        [Server]
         private void DropItem()
         {
-            PowerUpItem powerUp = Instantiate(itemPrefab, transform.position, Quaternion.identity).GetComponent<PowerUpItem>();
+            GameObject powerUpItemObject = Instantiate(itemPrefab, transform.position, Quaternion.identity);
+            PowerUpItem powerUp = powerUpItemObject.GetComponent<PowerUpItem>();
             powerUp.SetPowerUpType(lootItems[Random.Range(0,lootItems.Length)]);
+            NetworkServer.Spawn(powerUpItemObject);
         }
     }
 }

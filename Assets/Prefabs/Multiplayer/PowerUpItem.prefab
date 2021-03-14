@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2364447093050951776}
   - component: {fileID: 2364447093050951777}
   - component: {fileID: 2364447093050951779}
-  - component: {fileID: 2364447093050951778}
+  - component: {fileID: 4925106345503892729}
   - component: {fileID: -4061837094548865841}
+  - component: {fileID: 7622082800520983543}
   m_Layer: 0
   m_Name: PowerUpItem
   m_TagString: Untagged
@@ -76,8 +77,9 @@ MonoBehaviour:
   onCollectedBy:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2364447093050951778}
-        m_TargetAssemblyTypeName: Primozov.AmongBombs.PowerUpItem, Assembly-CSharp
+      - m_Target: {fileID: 4925106345503892729}
+        m_TargetAssemblyTypeName: Primozov.AmongBombs.Behaviours.Network.PowerUpItem,
+          Assembly-CSharp
         m_MethodName: Collect
         m_Mode: 0
         m_Arguments:
@@ -124,7 +126,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2364447093050951778
+--- !u!114 &4925106345503892729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,10 +135,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2364447093050951782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d108a3fc52a3ab84e854990113d62f55, type: 3}
+  m_Script: {fileID: 11500000, guid: d85a57596396f4fc0a7f3440f5304f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpType: 4
+  syncMode: 0
+  syncInterval: 0.1
+  powerUpType: 0
   sprite: {fileID: 0}
   spriteRenderer: {fileID: 0}
   secondsInvertedAxis: 10
@@ -236,6 +240,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7622082800520983543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2364447093050951782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &2364447093904799472
 GameObject:
   m_ObjectHideFlags: 0

@@ -54,7 +54,7 @@ MonoBehaviour:
   explosionPrefab: {fileID: 7206794692235087601, guid: c87381c48c4a341d2878db6908aa7577, type: 3}
   raycastFilterLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
 --- !u!50 &-929572295651631774
 Rigidbody2D:
   serializedVersion: 4

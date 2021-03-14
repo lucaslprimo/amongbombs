@@ -91,8 +91,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6604976110450737768}
+  - component: {fileID: 3426441872393488501}
   - component: {fileID: 6604976110450737769}
-  - component: {fileID: -474880964653799186}
   - component: {fileID: -2805371783209442215}
   m_Layer: 9
   m_Name: DestructableTile
@@ -116,6 +116,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3426441872393488501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604976110450737775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e6127f43faea4ddab7ac35b1350c85c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  lootChance: 50
+  itemPrefab: {fileID: 2364447093050951782, guid: 1467a871e7bef9b4cb43a819e6ffb9e2, type: 3}
+  lootItems: 0000000000000000000000000100000001000000020000000300000004000000050000000300000005000000
 --- !u!61 &6604976110450737769
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -142,21 +159,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-474880964653799186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6604976110450737775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80db0a6346d765645ad495bcc1c55c14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lootChance: 50
-  itemPrefab: {fileID: 2364447093050951782, guid: 803a5bf8e21c40b4c9aa6000dc4f1a20, type: 3}
-  lootItems: 0000000001000000000000000000000001000000020000000500000005000000040000000300000003000000
 --- !u!114 &-2805371783209442215
 MonoBehaviour:
   m_ObjectHideFlags: 0

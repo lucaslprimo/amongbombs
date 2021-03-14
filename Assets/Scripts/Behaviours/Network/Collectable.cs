@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Mirror;
 
-
-namespace Primozov.AmongBombs.Behaviours.Mono
+namespace Primozov.AmongBombs.Behaviours.Network
 {
-    public class Collectable : MonoBehaviour
+    public class Collectable : NetworkBehaviour
     {
         [SerializeField] UnityEvent<GameObject> onCollectedBy;
 
@@ -17,6 +17,11 @@ namespace Primozov.AmongBombs.Behaviours.Mono
                 onCollectedBy.Invoke(collision.gameObject);
                 Destroy(gameObject, 1f);
             }
+        }
+
+        private void CollectAndDestroyObjectForClients()
+        {
+
         }
     }
 }

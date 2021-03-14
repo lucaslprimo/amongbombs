@@ -1,13 +1,13 @@
-using Primozov.AmongBombs.Behaviours.Mono;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Mirror;
+using System.Collections.Generic;
+using Primozov.AmongBombs.Behaviours.Mono;
 
-namespace Primozov.AmongBombs
+namespace Primozov.AmongBombs.Behaviours.Network
 {
-    public class Explosion : MonoBehaviour
+    public class Explosion : NetworkBehaviour
     {
         [SerializeField] GameObject explosionPrefab;
         [SerializeField] LayerMask filterRaycastLayers;
@@ -19,29 +19,41 @@ namespace Primozov.AmongBombs
             Up, Down, Right, Left, ALL
         }
 
+        [Server]
         private void CheckHitSomething()
         {
             RaycastHit2D hit = Physics2D.CircleCast(transform.position, 0.4f, Vector2.zero, 0.5f, filterRaycastLayers);
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("Bomb"))
-                {
-                    Bomb bomb = hit.collider.gameObject.GetComponent<Bomb>();
-                    StartCoroutine(ChainExplosion(bomb));
+                {                    
+                    StartCoroutine(ChainExplosion(hit.collider.gameObject));
                 }
                 else if (hit.collider.CompareTag("Player"))
                 {
-                    Damagable damagable = hit.collider.gameObject.GetComponent<Damagable>();
-                    damagable.TakeDamage(0);
+                    DamagePlayerOnClients(hit.collider.gameObject);
                 }
             }
         }
 
-        IEnumerator ChainExplosion(Bomb bomb) {
+        IEnumerator ChainExplosion(GameObject obj) {
             yield return new WaitForSeconds(0.2f);
-            bomb.Explode();
+            if (obj != null)
+            {
+                Bomb bomb = obj.GetComponent<Bomb>();
+                bomb.Explode();
+            }
+           
         }
 
+        [ClientRpc]
+        public void DamagePlayerOnClients(GameObject obj)
+        {
+            Damagable damagable = obj.GetComponent<Damagable>();
+            damagable.TakeDamage(0);
+        }
+
+        [Server]
         public void Setup(bool isSource, ExplosionDirection direction, int bombRange, GroundTile groundTile)
         {
             CheckHitSomething();
@@ -80,26 +92,35 @@ namespace Primozov.AmongBombs
                     //Explosion Tail
                 }
             }
-            Destroy(gameObject, 1f);
+            StartCoroutine(DestroyGameObjectOnClients(gameObject, 1f));
         }
 
+        public IEnumerator DestroyGameObjectOnClients(GameObject obj, float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            NetworkServer.Destroy(obj);
+        }
+
+        [Server]
         private void SpreadExplosion(GroundTile.NeighborInfo neighborInfo, ExplosionDirection direction, int bombRange)
         {
             switch (neighborInfo.neighborType)
             {
                 case GroundTile.NeighborType.Destructable:
                     //Destroy the Destructable
-                    Loottable loottable = neighborInfo.gameObject.GetComponent<Loottable>();
+                    Loottable loottable  = neighborInfo.gameObject.GetComponent<Loottable>();
                     loottable.Loot();
-                    Destroy(neighborInfo.gameObject);
+                    StartCoroutine(DestroyGameObjectOnClients(neighborInfo.gameObject, 0f));
                     break;
                 case GroundTile.NeighborType.Indestructable:
                     //Nothing to do
                     break;
                 case GroundTile.NeighborType.Empty:
                     //Spawn Explosion
-                    Explosion explosion = Instantiate(explosionPrefab, neighborInfo.gameObject.transform.position, Quaternion.identity).GetComponent<Explosion>();
+                    GameObject explosionObject = Instantiate(explosionPrefab, neighborInfo.gameObject.transform.position, Quaternion.identity);
+                    Explosion explosion = explosionObject.GetComponent<Explosion>();
                     explosion.Setup(false, direction, bombRange, neighborInfo.gameObject.GetComponent<GroundTile>());
+                    NetworkServer.Spawn(explosionObject);
                     break;
             }
         }

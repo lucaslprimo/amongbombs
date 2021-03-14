@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Primozov.AmongBombs.Behaviours.Mono;
 using UnityEngine;
 
-namespace Primozov.AmongBombs
+namespace Primozov.AmongBombs.Behaviours.Mono
 {
     public class PowerUpItem : MonoBehaviour
     {

@@ -1,11 +1,7 @@
 using Cinemachine;
 using Mirror;
 using Primozov.AmongBombs.Systems;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Primozov.AmongBombs.Behaviours.Network
 {
@@ -33,7 +29,6 @@ namespace Primozov.AmongBombs.Behaviours.Network
             bombSystem.onExplode += Explode;
         }
 
-        [Server]
         private void Start()
         {
             mCollider = GetComponent<Collider2D>();
@@ -50,22 +45,21 @@ namespace Primozov.AmongBombs.Behaviours.Network
         public void Explode()
         {
             StopMoving();
-            ShakeCameraClients();
+            ShakeCameraClients(bombSystem.GetBombRange());
             GameObject explosionObject = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Explosion explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity).GetComponent<Explosion>();
+            Explosion explosion = explosionObject.GetComponent<Explosion>();
             NetworkServer.Spawn(explosionObject);
             explosion.Setup(true, Explosion.ExplosionDirection.ALL, bombSystem.GetBombRange(), groundTile);
-            Destroy(gameObject);   
+            NetworkServer.Destroy(gameObject);
         }
 
         [ClientRpc]
-        public void ShakeCameraClients()
+        public void ShakeCameraClients(float bombRange)
         {
-            impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombSystem.GetBombRange();
+            impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombRange;
             impulseSource.GenerateImpulse();
         }
 
-        [Server]
         private void OnTriggerExit2D(Collider2D collision)
         {
             mCollider.isTrigger = false;
@@ -87,10 +81,16 @@ namespace Primozov.AmongBombs.Behaviours.Network
                 if (hit.collider != null && hit.collider.CompareTag("Ground"))
                 {
                     groundTile = hit.collider.gameObject.GetComponent<GroundTile>();
-                    transform.position = groundTile.transform.position;
+                    OnHitUpdateClients(hit.collider.gameObject);
                 }
             }
-          
+        }
+
+        [ClientRpc]
+        private void OnHitUpdateClients(GameObject obj)
+        {
+            GroundTile groundTile = obj.GetComponent<GroundTile>();
+            transform.position = groundTile.transform.position;
         }
     }
 }
