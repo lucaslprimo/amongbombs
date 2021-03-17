@@ -21,11 +21,15 @@ namespace Primozov.AmongBombs.Behaviours.Network
         }
 
         void Update()
-        { 
-            if (Input.GetKeyDown(key))
+        {
+            if (isLocalPlayer)
             {
-                TryBombDrop();
+                if (Input.GetKeyDown(key))
+                {
+                    TryBombDrop();
+                }
             }
+            
         }
 
         public void IncreaseRange()
@@ -64,7 +68,7 @@ namespace Primozov.AmongBombs.Behaviours.Network
         [Command]
         private void CmdDropBomb(Vector3 position)
         {
-            GameObject bombObject = Instantiate(bombPrefab, position, Quaternion.identity);
+            GameObject bombObject = (GameObject)Instantiate(bombPrefab, position, Quaternion.identity);
             Bomb bomb = bombObject.GetComponent<Bomb>();
             bomb.SetupBomb(bombDropSystem.GetBombRange(), secondsToExplode);
             NetworkServer.Spawn(bombObject);

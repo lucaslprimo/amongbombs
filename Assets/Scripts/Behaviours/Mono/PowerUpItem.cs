@@ -7,24 +7,15 @@ namespace Primozov.AmongBombs.Behaviours.Mono
 {
     public class PowerUpItem : MonoBehaviour
     {
-        public enum PowerUpType
-        {
-            AddBomb, AddRange, PowerBomb, AddSpeed, InvertAxis, BombKick
-        }
-
         [SerializeField] PowerUpType powerUpType;
-        [SerializeField] Sprite sprite;
         [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] private float secondsInvertedAxis = 5;
+        [SerializeField] PowerUpItemSprites spritesObject;
 
         public void SetPowerUpType(PowerUpType powerUpType)
         {
             this.powerUpType = powerUpType;
-        }
-
-        void Start()
-        {
-            //spriteRenderer.sprite = sprite;
+            spriteRenderer.sprite = spritesObject.GetSpriteByType(powerUpType);
         }
 
         public void Collect(GameObject playerGameObject)
@@ -37,9 +28,6 @@ namespace Primozov.AmongBombs.Behaviours.Mono
                 case PowerUpType.AddRange:
                     playerGameObject.GetComponent<BombDropper>().IncreaseRange();
                     break;
-                case PowerUpType.PowerBomb:
-                    playerGameObject.GetComponent<BombDropper>().IncreaseToMaxRange();
-                    break;
                 case PowerUpType.AddSpeed:
                     playerGameObject.GetComponent<PlayerMovement>().IncreaseSpeed();
                     break;
@@ -51,7 +39,5 @@ namespace Primozov.AmongBombs.Behaviours.Mono
                     break;
             }
         }
-
-       
     }
 }

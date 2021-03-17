@@ -8,7 +8,7 @@ namespace Primozov.AmongBombs.Behaviours.Mono
         [SerializeField] float lootChance;
 
         [SerializeField] GameObject itemPrefab;
-        [SerializeField] PowerUpItem.PowerUpType[] lootItems;
+        [SerializeField] PowerUpType[] lootItems;
 
         public void Loot()
         {

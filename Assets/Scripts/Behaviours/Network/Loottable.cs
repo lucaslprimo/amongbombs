@@ -9,7 +9,7 @@ namespace Primozov.AmongBombs.Behaviours.Network
         [SerializeField] float lootChance;
 
         [SerializeField] GameObject itemPrefab;
-        [SerializeField] PowerUpItem.PowerUpType[] lootItems;
+        [SerializeField] PowerUpType[] lootItems;
 
         [Server]
         public void Loot()

@@ -1,56 +1,57 @@
 using UnityEngine;
 using Mirror;
+using System.Collections;
 
 namespace Primozov.AmongBombs.Behaviours.Network
 {
     public class PowerUpItem : NetworkBehaviour
     {
-        public enum PowerUpType
-        {
-            AddBomb, AddRange, PowerBomb, AddSpeed, InvertAxis, BombKick
-        }
-
         [SerializeField] PowerUpType powerUpType;
-        [SerializeField] Sprite sprite;
-        [SerializeField] SpriteRenderer spriteRenderer;
+        [SerializeField] public SpriteRenderer spriteRenderer;
+        [SerializeField] public BoxCollider2D mCollider;
         [SerializeField] private float secondsInvertedAxis = 5;
+        [SerializeField] PowerUpItemSprites spritesObject;
 
         public void SetPowerUpType(PowerUpType powerUpType)
         {
             this.powerUpType = powerUpType;
-        }
-
-        void Start()
-        {
-            //spriteRenderer.sprite = sprite;
+            spriteRenderer.sprite = spritesObject.GetSpriteByType(powerUpType);
         }
 
         public void Collect(GameObject playerGameObject)
         {
-            if (isLocalPlayer)
+            PlayerNetwork.Instance.CmdDisableItemOnClients(this);
+            switch (powerUpType)
             {
-                switch (powerUpType)
-                {
-                    case PowerUpType.AddBomb:
-                        playerGameObject.GetComponent<BombDropper>().IncreaseBombs();
-                        break;
-                    case PowerUpType.AddRange:
-                        playerGameObject.GetComponent<BombDropper>().IncreaseRange();
-                        break;
-                    case PowerUpType.PowerBomb:
-                        playerGameObject.GetComponent<BombDropper>().IncreaseToMaxRange();
-                        break;
-                    case PowerUpType.AddSpeed:
-                        playerGameObject.GetComponent<PlayerMovement>().IncreaseSpeed();
-                        break;
-                    case PowerUpType.InvertAxis:
-                        playerGameObject.GetComponent<PlayerMovement>().InvertAxis(secondsInvertedAxis);
-                        break;
-                    case PowerUpType.BombKick:
-                        playerGameObject.GetComponent<BombKick>().enabled = true;
-                        break;
-                }
+                case PowerUpType.AddBomb:
+                    playerGameObject.GetComponent<BombDropper>().IncreaseBombs();
+                    break;
+                case PowerUpType.AddRange:
+                    playerGameObject.GetComponent<BombDropper>().IncreaseRange();
+                    break;
+                case PowerUpType.AddSpeed:
+                    playerGameObject.GetComponent<PlayerMovement>().IncreaseSpeed();
+                    break;
+                case PowerUpType.InvertAxis:
+                    playerGameObject.GetComponent<PlayerMovement>().InvertAxis(secondsInvertedAxis);
+                    break;
+                case PowerUpType.BombKick:
+                    playerGameObject.GetComponent<BombKick>().enabled = true;
+                    break;
             }
-        }       
+
+            StartCoroutine(DestroyAfterSeconds(gameObject, 1f));
+        }
+
+        public IEnumerator DestroyAfterSeconds(GameObject obj, float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            PlayerNetwork.Instance.CmdDestroyItem(obj);
+        }
+
+        public void PlayPickUpSound()
+        {
+            GetComponent<AudioSource>().Play();
+        }
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Destructable
   - Bomb
   - Explosion
+  - Item
   layers:
   - Default
   - TransparentFX

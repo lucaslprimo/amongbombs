@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23a4d3d2b9381b44487381591785006a, type: 3}
+  m_Name: PowerUpSprites
+  m_EditorClassIdentifier: 
+  addBombSprite: {fileID: 21300000, guid: d193e0dc2b6176e42a715efda874fee2, type: 3}
+  addRangeSprite: {fileID: 21300000, guid: 4c9f496948577714dae0f53221d40bdc, type: 3}
+  addSpeedSprite: {fileID: 21300000, guid: 1c32298d5e92c904ca278c85684c9cf7, type: 3}
+  addInvertAxisSprite: {fileID: 21300000, guid: a10a838673e74404883317739e3bbae5, type: 3}
+  bombKickSprite: {fileID: 21300000, guid: cdf6d913fe7f3204989587a8f50550d4, type: 3}

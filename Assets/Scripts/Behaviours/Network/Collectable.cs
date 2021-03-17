@@ -12,16 +12,13 @@ namespace Primozov.AmongBombs.Behaviours.Network
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (PlayerNetwork.Instance.isLocalPlayer)
             {
-                onCollectedBy.Invoke(collision.gameObject);
-                Destroy(gameObject, 1f);
+                if (collision.gameObject.CompareTag("Player"))
+                {
+                    onCollectedBy.Invoke(collision.gameObject);
+                }
             }
-        }
-
-        private void CollectAndDestroyObjectForClients()
-        {
-
         }
     }
 }

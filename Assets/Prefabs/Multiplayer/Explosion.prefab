@@ -47,10 +47,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b228ac667cd6144c7816758cc3022759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 7206794692235087601}
+  syncMode: 0
+  syncInterval: 0.1
+  explosionPrefab: {fileID: 7206794692235087601, guid: cb6530508809bf64ab1109135afeee4d, type: 3}
   filterRaycastLayers:
     serializedVersion: 2
     m_Bits: 136
+  animator: {fileID: 3228230577486990965}
   onSourceExplosion:
     m_PersistentCalls:
       m_Calls:
@@ -264,5 +267,10 @@ PrefabInstance:
 --- !u!4 &7206794690690714509 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4754165694866922868, guid: 7c029bad7752be2479b690fd762c257a, type: 3}
+  m_PrefabInstance: {fileID: 2736390959006652153}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &3228230577486990965 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 663550386099198092, guid: 7c029bad7752be2479b690fd762c257a, type: 3}
   m_PrefabInstance: {fileID: 2736390959006652153}
   m_PrefabAsset: {fileID: 0}

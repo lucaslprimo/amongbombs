@@ -46,15 +46,22 @@ namespace Primozov.AmongBombs.Behaviours.Network
         {
             StopMoving();
             ShakeCameraClients(bombSystem.GetBombRange());
-            GameObject explosionObject = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            ShakeCameraServer(bombSystem.GetBombRange());
+            GameObject explosionObject = (GameObject)Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             Explosion explosion = explosionObject.GetComponent<Explosion>();
-            NetworkServer.Spawn(explosionObject);
             explosion.Setup(true, Explosion.ExplosionDirection.ALL, bombSystem.GetBombRange(), groundTile);
+            NetworkServer.Spawn(explosionObject);
             NetworkServer.Destroy(gameObject);
         }
 
         [ClientRpc]
         public void ShakeCameraClients(float bombRange)
+        {
+            impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombRange;
+            impulseSource.GenerateImpulse();
+        }
+
+        public void ShakeCameraServer(float bombRange)
         {
             impulseSource.m_ImpulseDefinition.m_AmplitudeGain += bombRange;
             impulseSource.GenerateImpulse();
@@ -68,7 +75,10 @@ namespace Primozov.AmongBombs.Behaviours.Network
         [Server]
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            StopMoving();
+            if (rb && rb.velocity != Vector2.zero)
+            {
+                StopMoving();
+            }
         }
 
         [Server]
@@ -81,16 +91,9 @@ namespace Primozov.AmongBombs.Behaviours.Network
                 if (hit.collider != null && hit.collider.CompareTag("Ground"))
                 {
                     groundTile = hit.collider.gameObject.GetComponent<GroundTile>();
-                    OnHitUpdateClients(hit.collider.gameObject);
+                    transform.position = groundTile.transform.position;
                 }
             }
-        }
-
-        [ClientRpc]
-        private void OnHitUpdateClients(GameObject obj)
-        {
-            GroundTile groundTile = obj.GetComponent<GroundTile>();
-            transform.position = groundTile.transform.position;
         }
     }
 }

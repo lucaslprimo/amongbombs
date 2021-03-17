@@ -11,6 +11,7 @@ namespace Primozov.AmongBombs.Behaviours.Network
     {
         [SerializeField] GameObject explosionPrefab;
         [SerializeField] LayerMask filterRaycastLayers;
+        [SerializeField] Animator animator;
 
         [SerializeField] UnityEvent onSourceExplosion;
 
@@ -33,6 +34,10 @@ namespace Primozov.AmongBombs.Behaviours.Network
                 {
                     DamagePlayerOnClients(hit.collider.gameObject);
                 }
+                else if (hit.collider.CompareTag("Item"))
+                {
+                    NetworkServer.Destroy(hit.collider.gameObject);
+                }
             }
         }
 
@@ -43,7 +48,6 @@ namespace Primozov.AmongBombs.Behaviours.Network
                 Bomb bomb = obj.GetComponent<Bomb>();
                 bomb.Explode();
             }
-           
         }
 
         [ClientRpc]
@@ -68,6 +72,12 @@ namespace Primozov.AmongBombs.Behaviours.Network
             }
             else
             {
+                animator.SetBool("isDerivate", true);
+                if (direction == ExplosionDirection.Up || direction == ExplosionDirection.Down)
+                {
+                    transform.rotation = Quaternion.Euler(0, 0, 90);
+                }
+
                 if (bombRange > 0)
                 {
                     bombRange--;
