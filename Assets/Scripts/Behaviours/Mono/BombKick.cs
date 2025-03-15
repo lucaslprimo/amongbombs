@@ -42,7 +42,7 @@ namespace Primozov.AmongBombs.Behaviours.Mono
         private void KickBomb(Rigidbody2D rigidbody2D)
         {
             onKickBomb.Invoke();
-            rigidbody2D.velocity = new Vector2(rotationReference.right.x, rotationReference.right.y) * kickForce;
+            rigidbody2D.linearVelocity = new Vector2(rotationReference.right.x, rotationReference.right.y) * kickForce;
         }
 
         private Rigidbody2D GetBombAhead()

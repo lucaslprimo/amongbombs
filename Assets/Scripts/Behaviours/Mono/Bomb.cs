@@ -65,7 +65,7 @@ namespace Primozov.AmongBombs.Behaviours.Mono
         {
             if (rb)
             {
-                rb.velocity = Vector2.zero;
+                rb.linearVelocity = Vector2.zero;
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f, raycastFilterLayer);
                 if (hit.collider != null && hit.collider.CompareTag("Ground"))
                 {
